@@ -1,3 +1,6 @@
+import pandas as pd
+import re
+
 def dissect_mFile( mfile_address ):
 
 	functions = list()
