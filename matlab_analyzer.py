@@ -11,5 +11,7 @@ def dissect_mFile( mfile_address ):
 
 	functions_ = list()
 	[ functions_.append( function ) for function in functions if function[0]=='m' or function[0]=='f' ]
+	[ print(fxn) for fxn in functions_ ]
+	
 	print( f'Saving to {filename}_architecture.csv' )
 	return pd.DataFrame(functions_).to_csv(f"{filename}_architecture.csv")
