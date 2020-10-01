@@ -56,5 +56,6 @@ class a_function:
     
 
 def dissect_mFile_objects( mfile_address ):
-  output = re.search( 'm', mfile_address ).group(0)
+  input = 'abc def ghi'
+  output = input.split()
   return output

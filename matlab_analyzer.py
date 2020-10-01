@@ -60,7 +60,6 @@ def dissect_mFile_objects( mfile_address ):
 
 	output_list = list()
 	line_number = 1 # (Arbitrarily starts here to make this match up with MATLAB line editor which starts at 1)
-	print( re.search('abc','abcdef') )
 	
 	# Classify the m-file as either a function, class, or script
 	with open( mfile_address , 'r+', encoding = "ISO-8859-1"  ) as f:
