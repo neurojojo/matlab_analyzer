@@ -1,4 +1,4 @@
-import re, numpy as np
+ import numpy as np
 
 class a_function:
   
@@ -56,66 +56,67 @@ class a_function:
 
 def dissect_mFile_objects( mfile_address ):
 
-  output_list = list()
-  line_number = 1 # (Arbitrarily starts here to make this match up with MATLAB line editor which starts at 1)
+	import re
+	output_list = list()
+	line_number = 1 # (Arbitrarily starts here to make this match up with MATLAB line editor which starts at 1)
 
-  # Classify the m-file as either a function, class, or script
-  with open( mfile_address , 'r+', encoding = "ISO-8859-1"  ) as f:
-    myline = f.readline()
-    first_real_line = myline.split()
-    # Enter the first while loop to find an identifier of the file type
-    if re.search('[a-zA-Z]',myline) is None: # The first line may contain a comment, space (no text) #
-      while re.search('%',myline) is not None or re.search('[a-zA-Z]',myline) is None: # Go to the first line which has text and is not a comment
-        myline = f.readline()
-        first_real_line = myline.split()
-        line_number+=1
+	# Classify the m-file as either a function, class, or script
+	with open( mfile_address , 'r+', encoding = "ISO-8859-1"  ) as f:
+	myline = f.readline()
+	first_real_line = myline.split()
+	# Enter the first while loop to find an identifier of the file type
+	if re.search('[a-zA-Z]',myline) is None: # The first line may contain a comment, space (no text) #
+	  while re.search('%',myline) is not None or re.search('[a-zA-Z]',myline) is None: # Go to the first line which has text and is not a comment
+	    myline = f.readline()
+	    first_real_line = myline.split()
+	    line_number+=1
 
-    # Get the filetype based on the first real line of the file
-    filetype = 'script' # Default
-    if first_real_line[0]=='function':
-      filetype = 'function'
-      f.seek( f.tell() - len(myline) ) # Reverse to make sure that the code below catches this function
-    if first_real_line[0]=='classdef':
-      filetype = 'class'
-    
-  # Continue reading through the file to look for functions
-    while 1:
-      myline = f.readline()
-      line_number+=1
+	# Get the filetype based on the first real line of the file
+	filetype = 'script' # Default
+	if first_real_line[0]=='function':
+	  filetype = 'function'
+	  f.seek( f.tell() - len(myline) ) # Reverse to make sure that the code below catches this function
+	if first_real_line[0]=='classdef':
+	  filetype = 'class'
 
-      # Look for a line that can have either multiple spaces or tabs and then the word function
-      myfunctionsearch = re.search( '^[\s|\t]{0,}function', myline )
-      if myfunctionsearch is not None : # A function has been located based on the regexp search and will be parsed below
+	# Continue reading through the file to look for functions
+	while 1:
+	  myline = f.readline()
+	  line_number+=1
 
-        myfunctioncodeblock = '' # Begin with an empty string
-        if re.search( '\w+(?=\()', myline ) is None: # The case when a function is split over an ellipsis
-          myline = f.readline()
-          line_number+=1
-          break
+	  # Look for a line that can have either multiple spaces or tabs and then the word function
+	  myfunctionsearch = re.search( '^[\s|\t]{0,}function', myline )
+	  if myfunctionsearch is not None : # A function has been located based on the regexp search and will be parsed below
 
-        myfunctiontitle = re.search( '\w+(?=\()', myline ).group(0) # Extract the name of the function (as the string immediately preceeding a left parentheses)
-        myfunctioncodeblock = myfunctioncodeblock + str(line_number) + '\t' + myline # Add the entire line to the codeblock
-        myline = f.readline() # Advance in the file 
-        line_number+=1
+	    myfunctioncodeblock = '' # Begin with an empty string
+	    if re.search( '\w+(?=\()', myline ) is None: # The case when a function is split over an ellipsis
+	      myline = f.readline()
+	      line_number+=1
+	      break
 
-        while 1: # Enter this loop to go through the function's body
-          # If the next line either starts with the word function OR is the end of the file, this loop will break
-          if re.search( '^[\s|\t]{0,}function', myline ) is not None or len(myline)==0:
-             # The final output of the function is here #
-             # It creates a list of a_function objects  #
-            output_list.append( a_function( myfunctioncodeblock, filetype=filetype, filename=mfile_address ) )
-            f.seek( f.tell() - len(myline) - 2 )
-            line_number-=2 # Goes two lines back up
-            break
-          else:
-            myfunctioncodeblock = myfunctioncodeblock + str(line_number) + '\t' + myline
-            myline = f.readline()
-            line_number+=1
+	    myfunctiontitle = re.search( '\w+(?=\()', myline ).group(0) # Extract the name of the function (as the string immediately preceeding a left parentheses)
+	    myfunctioncodeblock = myfunctioncodeblock + str(line_number) + '\t' + myline # Add the entire line to the codeblock
+	    myline = f.readline() # Advance in the file 
+	    line_number+=1
 
-      if len(myline)==0: # Reached the end of the file
-        break
+	    while 1: # Enter this loop to go through the function's body
+	      # If the next line either starts with the word function OR is the end of the file, this loop will break
+	      if re.search( '^[\s|\t]{0,}function', myline ) is not None or len(myline)==0:
+	         # The final output of the function is here #
+	         # It creates a list of a_function objects  #
+	        output_list.append( a_function( myfunctioncodeblock, filetype=filetype, filename=mfile_address ) )
+	        f.seek( f.tell() - len(myline) - 2 )
+	        line_number-=2 # Goes two lines back up
+	        break
+	      else:
+	        myfunctioncodeblock = myfunctioncodeblock + str(line_number) + '\t' + myline
+	        myline = f.readline()
+	        line_number+=1
 
-  return output_list
+	  if len(myline)==0: # Reached the end of the file
+	    break
+
+	return output_list
 
 def makeFxnMap( list_of_fxn_objects ):
 
