@@ -59,3 +59,8 @@ def dissect_mFile_objects( mfile_address ):
   input = 'abc def ghi'
   output = input.split()
   return output
+
+def test( mytext ):
+  input = 'abc def ghi'
+  output = input.split()
+  return output
