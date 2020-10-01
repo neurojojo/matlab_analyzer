@@ -1,4 +1,4 @@
-import numpy as np
+import re, numpy as np
 
 class a_function:
   
