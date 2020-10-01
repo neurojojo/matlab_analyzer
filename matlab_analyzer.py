@@ -56,7 +56,6 @@ class a_function:
 
 def dissect_mFile_objects( mfile_address ):
 
-	import re
 	output_list = list()
 	line_number = 1 # (Arbitrarily starts here to make this match up with MATLAB line editor which starts at 1)
 
