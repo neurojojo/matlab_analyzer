@@ -123,6 +123,6 @@ def makeFxnMap( list_of_fxn_objects ):
   Nfxns = len(list_of_fxn_objects)
   fxnMap = np.zeros( shape=[0,Nfxns] )
   for i in range( Nfxns ):
-    output = [ list_of_fxn_objects[i].search( f'{this_fxn.name}(' ) for this_fxn in list_of_fxn_objects ]
+    output = [ list_of_fxn_objects[i].search( f'{this_fxn.name}\(' ) for this_fxn in list_of_fxn_objects ]
     fxnMap = np.vstack( [fxnMap,output] )
   return fxnMap
