@@ -56,7 +56,6 @@ class a_function:
     
 
 def dissect_mFile_objects( mfile_address ):
-	import re
 
 	output_list = list()
 	line_number = 1 # (Arbitrarily starts here to make this match up with MATLAB line editor which starts at 1)
@@ -124,6 +123,6 @@ def makeFxnMap( list_of_fxn_objects ):
   Nfxns = len(list_of_fxn_objects)
   fxnMap = np.zeros( shape=[0,Nfxns] )
   for i in range( Nfxns ):
-    output = [ list_of_fxn_objects[i].search( this_fxn.name ) for this_fxn in list_of_fxn_objects ]
+    output = [ list_of_fxn_objects[i].search( f'{this_fxn.name}(' ) for this_fxn in list_of_fxn_objects ]
     fxnMap = np.vstack( [fxnMap,output] )
   return fxnMap
