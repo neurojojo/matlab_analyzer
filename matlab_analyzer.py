@@ -55,6 +55,9 @@ class a_function:
   def addProperty(self, newproperty):
   	self.propertieslist.append(newproperty)
 
+  def clearProperties(self):
+  	self.propertieslist = list()
+  	
   def evaluate(self):
     evaluation = dict()
     evaluation = self.search( 'for' )
