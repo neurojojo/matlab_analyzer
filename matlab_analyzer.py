@@ -45,6 +45,8 @@ class a_function:
       result = { query_ : len( re.findall( query_ , self.raw ) ) for query_ in query }
     if isinstance( query, str ):
       result = len( re.findall( query, self.raw ) )
+      if result==0: # Set the result to None if the answer is zero
+      	result = None
     if not(isinstance( query, dict )) and not(isinstance( query, list )) and not(isinstance( query, str )):
       return
     return result
@@ -117,6 +119,21 @@ def dissect_mFile_objects( mfile_address ):
 		    break
 
 	return output_list
+
+def getProperties( filename ):
+
+  with open( filename,'r+' ) as f:
+    mytxt = f.read()
+
+  results_ = re.findall('(?<=properties).*?[^a-z]end',mytxt, re.DOTALL)
+
+  properties = [ ( c, re.search('\w+',x).group(0) ) for c,x in enumerate(re.findall( '.*\n', results_[0] )) if re.search('\w+',x) is not None ]
+  values = [ ( c, re.search('(?<=\=).*(?=\;)',x).group(0) ) for c,x in enumerate(re.findall( '.*\n', results_[0] )) if re.search('(?<=\=).*',x) is not None ]
+
+  df1 = pd.DataFrame( properties, columns=['row','property'] ); df1=df1.set_index('row');
+  df2 = pd.DataFrame( values, columns=['row','value'] ); df2=df2.set_index('row');
+
+  return pd.concat( [df1,df2] )
 
 def makeFxnMap( list_of_fxn_objects ):
 
