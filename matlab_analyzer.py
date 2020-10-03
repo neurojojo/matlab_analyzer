@@ -11,6 +11,7 @@ class a_function:
   librarytable = ''
   filetype = ''
   filename = ''
+  propertieslist = list()
 
   def __init__(self, input, **kwargs):
     self.raw = input
@@ -50,6 +51,9 @@ class a_function:
     if not(isinstance( query, dict )) and not(isinstance( query, list )) and not(isinstance( query, str )):
       return
     return result
+
+  def addProperty(self, newproperty):
+  	self.propertieslist.append(newproperty)
 
   def evaluate(self):
     evaluation = dict()
