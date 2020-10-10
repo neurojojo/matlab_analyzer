@@ -283,12 +283,13 @@ class PDF(FPDF):
       print( self.get_x() )
       print( self.get_y() )
 
-def createPage( package, function, description ):
-  pdf.add_page()
-  pdf.text(type='topright', txt=package)
-  pdf.text(type='title',    txt=function,     x=10, y=10, w=100,  h=10  )
-  pdf.text(type='subtitle', txt=description,  x=10, y=20, w=100,  h=10  )
-  pdf.set_line_width( 0.25 )
-  pdf.hline(10)
-  pdf.set_line_width( 0.25 )
-  pdf.hline(20)
+def createPage( pdf_, package, function, description ):
+  pdf_.add_page()
+  pdf_.text(type='topright', txt=package)
+  pdf_.text(type='title',    txt=function,     x=10, y=10, w=100,  h=10  )
+  pdf_.text(type='subtitle', txt=description,  x=10, y=20, w=100,  h=10  )
+  pdf_.set_line_width( 0.25 )
+  pdf_.hline(10)
+  pdf_.set_line_width( 0.25 )
+  pdf_.hline(20)
+  return pdf_
