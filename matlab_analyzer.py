@@ -73,8 +73,10 @@ class an_mfile:
       properties = [ ( c, re.search('\w+',x).group(0) ) for c,x in enumerate(re.findall( '.*\n', results_[0] )) if re.search('\w+',x) is not None ]
       values = [ ( c, re.search('(?<=\=).*(?=\;)',x).group(0) ) for c,x in enumerate(re.findall( '.*\n', results_[0] )) if re.search('(?<=\=).*(?=\;)',x) is not None ]
 
-      df1 = pd.DataFrame( properties, columns=['row','property'] ); df1=df1.set_index('row');   # Properties
-      df2 = pd.DataFrame( values, columns=['row','value'] ); df2=df2.set_index('row');          # Values extracted
+      df1 = pd.DataFrame( properties, columns=['row','property'] ); 
+      df1 = df1.set_index('row');   # Properties
+      df2 = pd.DataFrame( values, columns=['row','value'] ); 
+      df2 = df2.set_index('row');          # Values extracted
 
       self.properties = pd.concat( [df1,df2], axis=1 )
 
