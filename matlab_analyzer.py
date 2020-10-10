@@ -2,6 +2,8 @@ import numpy as np
 import re
 import glob
 import pandas as pd
+from fpdf import FPDF  # fpdf class
+import numpy as np
 
 class a_package:
 
@@ -231,3 +233,62 @@ def makeFxnMap( list_of_fxn_objects ):
     output = [ search_mFile( list_of_fxn_objects[i], f'{this_fxn.name}\(' ) for this_fxn in list_of_fxn_objects ]
     fxnMap = np.vstack( [fxnMap,output] )
   return fxnMap
+
+  #################################
+  # PDF writing functions         #
+  #################################
+
+class PDF(FPDF):
+
+  pdf_w=210
+  pdf_h=297
+
+  def hline(self,y,**kwargs):
+      self.line( 0 , y , self.pdf_w , y ) # top one
+
+  def vline(self,x,**kwargs):
+      self.line( x , 0 , x , self.pdf_h ) # top one
+
+  def grid(self):
+    for i in np.linspace(0,290,30):
+      self.set_line_width( 0.05 )
+      self.hline(i)
+      self.vline(i)
+
+  def hbox(self,*argv):
+    #x,y,w,h
+    self.set_line_width( 0.25 )
+    self.rect( argv[0], argv[1], self.pdf_w-2*argv[0], argv[3], style='')
+
+  def text( self, txt, **kwargs ):
+    if kwargs['type']=='title':
+      self.set_xy( kwargs['x'],  kwargs['y'] )
+      self.set_font('Arial', 'B', 16)
+      self.set_text_color( 50, 50, 50 )
+      self.cell( w = kwargs['w'] , h = kwargs['h'] , txt=txt, border=0)
+
+    if kwargs['type']=='subtitle':
+      self.set_xy( kwargs['x'],  kwargs['y'] )
+      self.set_font('Arial', 'I', 12)
+      self.set_text_color( 50, 50, 50 )
+      self.cell( w = kwargs['w'] , h = kwargs['h'] , txt=txt, border=0)
+
+    if kwargs['type']=='topright':
+      self.set_xy( self.pdf_w - 50,  0 )
+      self.set_font('Arial', 'I', 8)
+      self.set_text_color( 50, 50, 50 )
+      self.cell( w = 40 , h = 10 , txt=txt, border=0)
+      
+    if kwargs['type']=='cell':
+      print( self.get_x() )
+      print( self.get_y() )
+
+def createPage( package, function, description ):
+  pdf.add_page()
+  pdf.text(type='topright', txt=package)
+  pdf.text(type='title',    txt=function,     x=10, y=10, w=100,  h=10  )
+  pdf.text(type='subtitle', txt=description,  x=10, y=20, w=100,  h=10  )
+  pdf.set_line_width( 0.25 )
+  pdf.hline(10)
+  pdf.set_line_width( 0.25 )
+  pdf.hline(20)
