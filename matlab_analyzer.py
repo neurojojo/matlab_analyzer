@@ -1,4 +1,7 @@
-import numpy as np, re, glob, pandas as pd
+import numpy as np
+import re
+import glob
+import pandas as pd
 
 class a_package:
 
