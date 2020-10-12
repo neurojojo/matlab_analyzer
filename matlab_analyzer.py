@@ -94,10 +94,10 @@ class an_mfile:
     with open( self.filename , 'r+', encoding = "ISO-8859-1"  ) as f:
       print(f'Checking file type for f{self.filename}')
       myline = f.readline()
-      print(f'Read line for f{self.filename}')
       first_real_line = myline.split()
       # Enter the first while loop to find an identifier of the file type
       if re.search('[a-zA-Z]',myline) is None: # The first line may contain a comment, space (no text) #
+        print(f'Searching within f{self.filename}')
         while re.search('%',myline) is not None or re.search('[a-zA-Z]',myline) is None: # Go to the first line which has text and is not a comment
           myline = f.readline()
           first_real_line = myline.split()
