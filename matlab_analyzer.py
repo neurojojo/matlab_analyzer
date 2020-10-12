@@ -96,12 +96,12 @@ class an_mfile:
         print(f'Checking file type for f{self.filename}')
         myline = f.readline()
         first_real_line = myline.split()
-          # Enter the first while loop to find an identifier of the file type
-          if re.search('[a-zA-Z]',myline) is None: # The first line may contain a comment, space (no text) #
-            while re.search('%',myline) is not None or re.search('[a-zA-Z]',myline) is None: # Go to the first line which has text and is not a comment
-              myline = f.readline()
-              first_real_line = myline.split()
-              line_number+=1
+        # Enter the first while loop to find an identifier of the file type
+        if re.search('[a-zA-Z]',myline) is None: # The first line may contain a comment, space (no text) #
+          while re.search('%',myline) is not None or re.search('[a-zA-Z]',myline) is None: # Go to the first line which has text and is not a comment
+            myline = f.readline()
+            first_real_line = myline.split()
+            line_number+=1
     except:
       pass
 
