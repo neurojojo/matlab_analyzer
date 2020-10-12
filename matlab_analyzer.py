@@ -102,17 +102,18 @@ class an_mfile:
             myline = f.readline()
             first_real_line = myline.split()
             line_number+=1
+
+      # Get the filetype based on the first real line of the file
+      filetype = 'script' # Default
+      if first_real_line[0]=='function':
+        filetype = 'function'
+        f.seek( f.tell() - len(myline) ) # Reverse to make sure that the code below catches this function
+      if first_real_line[0]=='classdef':
+        filetype = 'class'
+
     except:
-      pass
-
-    # Get the filetype based on the first real line of the file
-    filetype = 'script' # Default
-    if first_real_line[0]=='function':
-      filetype = 'function'
-      f.seek( f.tell() - len(myline) ) # Reverse to make sure that the code below catches this function
-    if first_real_line[0]=='classdef':
-      filetype = 'class'
-
+      filetype='indeterminate';
+      
     self.filetype = filetype
 
   #######################
