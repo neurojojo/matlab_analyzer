@@ -89,11 +89,12 @@ class an_mfile:
   def getFiletype( self ):
 
     line_number = 0
-    
+
     # Classify the m-file as either a function, class, or script
     with open( self.filename , 'r+', encoding = "ISO-8859-1"  ) as f:
       print(f'Checking file type for f{self.filename}')
       myline = f.readline()
+      print(f'Read line for f{self.filename}')
       first_real_line = myline.split()
       # Enter the first while loop to find an identifier of the file type
       if re.search('[a-zA-Z]',myline) is None: # The first line may contain a comment, space (no text) #
