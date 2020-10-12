@@ -271,7 +271,7 @@ class PDF(FPDF):
       self.set_xy( kwargs['x'],  kwargs['y'] )
       self.set_font('Arial', 'I', 12)
       self.set_text_color( 50, 50, 50 )
-      self.cell( w = kwargs['w'] , h = kwargs['h'] , txt=txt, border=0)
+      self.multi_cell( w = kwargs['w'] , h = kwargs['h'] , txt=txt, border=0)
 
     if kwargs['type']=='topright':
       self.set_xy( self.pdf_w - 50,  0 )
@@ -287,7 +287,7 @@ def createPage( pdf_, package, function, description ):
   pdf_.add_page()
   pdf_.text(type='topright', txt=package)
   pdf_.text(type='title',    txt=function,     x=10, y=10, w=100,  h=10  )
-  pdf_.text(type='subtitle', txt=description,  x=10, y=20, w=100,  h=10  )
+  pdf_.text(type='subtitle', txt=description,  x=10, y=20, w=150,  h=10  )
   pdf_.set_line_width( 0.25 )
   pdf_.hline(10)
   pdf_.set_line_width( 0.25 )
