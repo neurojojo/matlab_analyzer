@@ -90,30 +90,30 @@ class an_mfile:
 
     line_number = 0
 
+    try:
     # Classify the m-file as either a function, class, or script
-    with open( self.filename , 'r+', encoding = "ISO-8859-1"  ) as f:
-      print(f'Checking file type for f{self.filename}')
-      myline = f.readline()
-      try:
+      with open( self.filename , 'r+', encoding = "ISO-8859-1"  ) as f:
+        print(f'Checking file type for f{self.filename}')
+        myline = f.readline()
         first_real_line = myline.split()
-        # Enter the first while loop to find an identifier of the file type
-        if re.search('[a-zA-Z]',myline) is None: # The first line may contain a comment, space (no text) #
-          while re.search('%',myline) is not None or re.search('[a-zA-Z]',myline) is None: # Go to the first line which has text and is not a comment
-            myline = f.readline()
-            first_real_line = myline.split()
-            line_number+=1
-      except:
-        line_number+=1
+          # Enter the first while loop to find an identifier of the file type
+          if re.search('[a-zA-Z]',myline) is None: # The first line may contain a comment, space (no text) #
+            while re.search('%',myline) is not None or re.search('[a-zA-Z]',myline) is None: # Go to the first line which has text and is not a comment
+              myline = f.readline()
+              first_real_line = myline.split()
+              line_number+=1
+    except:
+      pass
 
-      # Get the filetype based on the first real line of the file
-      filetype = 'script' # Default
-      if first_real_line[0]=='function':
-        filetype = 'function'
-        f.seek( f.tell() - len(myline) ) # Reverse to make sure that the code below catches this function
-      if first_real_line[0]=='classdef':
-        filetype = 'class'
+    # Get the filetype based on the first real line of the file
+    filetype = 'script' # Default
+    if first_real_line[0]=='function':
+      filetype = 'function'
+      f.seek( f.tell() - len(myline) ) # Reverse to make sure that the code below catches this function
+    if first_real_line[0]=='classdef':
+      filetype = 'class'
 
-      self.filetype = filetype
+    self.filetype = filetype
 
   #######################
   # Functions handling  #
@@ -124,6 +124,7 @@ class an_mfile:
     output_list = list()
     line_number = 1 # (Arbitrarily starts here to make this match up with MATLAB line editor which starts at 1)
     
+    print(f'Checking functions for f{self.filename}')
     # Classify the m-file as either a function, class, or script
     with open( self.filename , 'r+', encoding = "ISO-8859-1"  ) as f:
       myline = f.readline()
