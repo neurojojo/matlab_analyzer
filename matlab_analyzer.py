@@ -88,6 +88,8 @@ class an_mfile:
 
   def getFiletype( self ):
 
+    line_number = 0
+    
     # Classify the m-file as either a function, class, or script
     with open( self.filename , 'r+', encoding = "ISO-8859-1"  ) as f:
       myline = f.readline()
