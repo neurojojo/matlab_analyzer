@@ -96,13 +96,15 @@ class an_mfile:
       myline = f.readline()
       first_real_line = myline.split()
       # Enter the first while loop to find an identifier of the file type
-      if re.search('[a-zA-Z]',myline) is None: # The first line may contain a comment, space (no text) #
-        print(f'Searching within f{self.filename}')
-        while re.search('%',myline) is not None or re.search('[a-zA-Z]',myline) is None: # Go to the first line which has text and is not a comment
-          myline = f.readline()
-          first_real_line = myline.split()
-          line_number+=1
-
+      try:
+        if re.search('[a-zA-Z]',myline) is None: # The first line may contain a comment, space (no text) #
+          while re.search('%',myline) is not None or re.search('[a-zA-Z]',myline) is None: # Go to the first line which has text and is not a comment
+            myline = f.readline()
+            first_real_line = myline.split()
+            line_number+=1
+      except:
+        line_number+=1
+        
       # Get the filetype based on the first real line of the file
       filetype = 'script' # Default
       if first_real_line[0]=='function':
