@@ -57,6 +57,7 @@ class an_mfile:
   # Read in the raw text of the file #
   ####################################
   def readFile( self ):
+    print(f'Reading {self.filename}\n')
     with open( self.filename, 'r+', encoding = "ISO-8859-1" ) as f:
       self.raw = f.read()
 
