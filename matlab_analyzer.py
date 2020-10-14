@@ -40,6 +40,7 @@ class an_mfile:
   properties = ''
 
   def __init__(self, filename, **kwargs):
+    print(f'Reading {self.filename}\n')
     self.filename = filename
     self.readFile()
     self.getProperties()
