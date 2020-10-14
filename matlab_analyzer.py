@@ -41,12 +41,12 @@ class an_mfile:
 
   def __init__(self, filename, **kwargs):
     print(f'Reading {self.filename}\n')
-    self.filename = filename
-    self.readFile()
-    self.getProperties()
-    self.getFiletype()
-    self.getFunctions()
-    self.description = f"{self.filename} ({self.filetype})\n\n{self.properties}\n\n{pd.DataFrame([ this_fxn.name for this_fxn in self.functions ],columns=['Functions'])}"
+    #self.filename = filename
+    #self.readFile()
+    #self.getProperties()
+    #self.getFiletype()
+    #self.getFunctions()
+    #self.description = f"{self.filename} ({self.filetype})\n\n{self.properties}\n\n{pd.DataFrame([ this_fxn.name for this_fxn in self.functions ],columns=['Functions'])}"
 
   def __repr__(self):
     return repr( f'M-file object -- {self.filename} with properties: name,length,description,raw,filetype,filename,functions,properties' )
