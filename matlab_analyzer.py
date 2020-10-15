@@ -2,7 +2,6 @@ import numpy as np
 import re
 import glob
 import pandas as pd
-from fpdf import FPDF  # fpdf class
 import numpy as np
 
 class a_package:
@@ -14,6 +13,7 @@ class a_package:
   properties_table = ''
   functions_table = ''
   folder = ''
+  mfileObjs = ''
 
   def __init__(self, folder, **kwargs):
 
@@ -21,12 +21,16 @@ class a_package:
     self.files = glob.glob( f'{folder}/**/*.m', recursive=True);
     self.description = 'Top-level directory: ' + self.folder + '\n\n' + '\n'.join(self.files)
     self.length = len(self.files)
+    self.getmFiles()
 
   def __repr__(self):
     return repr( f'MATLAB package object -- {self.folder} with properties: name,length,description,files,properties_table,functions_table' )
 
   def __str__(self):
     return self.description
+
+  def getmFiles(self):
+    self.mfileObjs = [ an_mfile( thisfile ) for thisfile in self.files ]
 
 class an_mfile:
 
@@ -40,13 +44,12 @@ class an_mfile:
   properties = ''
 
   def __init__(self, filename, **kwargs):
-    print(f'Reading {self.filename}\n')
-    #self.filename = filename
-    #self.readFile()
-    #self.getProperties()
-    #self.getFiletype()
-    #self.getFunctions()
-    #self.description = f"{self.filename} ({self.filetype})\n\n{self.properties}\n\n{pd.DataFrame([ this_fxn.name for this_fxn in self.functions ],columns=['Functions'])}"
+    self.filename = filename
+    self.readFile()
+    self.getProperties()
+    self.getFiletype()
+    self.getFunctions()
+    self.description = f"{self.filename} ({self.filetype})\n\n{self.properties}\n\n{pd.DataFrame([ this_fxn.name for this_fxn in self.functions ],columns=['Functions'])}"
 
   def __repr__(self):
     return repr( f'M-file object -- {self.filename} with properties: name,length,description,raw,filetype,filename,functions,properties' )
@@ -58,7 +61,6 @@ class an_mfile:
   # Read in the raw text of the file #
   ####################################
   def readFile( self ):
-    print(f'Reading {self.filename}\n')
     with open( self.filename, 'r+', encoding = "ISO-8859-1" ) as f:
       self.raw = f.read()
 
@@ -95,7 +97,6 @@ class an_mfile:
     try:
     # Classify the m-file as either a function, class, or script
       with open( self.filename , 'r+', encoding = "ISO-8859-1"  ) as f:
-        print(f'Checking file type for f{self.filename}')
         myline = f.readline()
         first_real_line = myline.split()
         # Enter the first while loop to find an identifier of the file type
@@ -128,8 +129,6 @@ class an_mfile:
     line_number = 1 # (Arbitrarily starts here to make this match up with MATLAB line editor which starts at 1)
     
     try:
-
-      print(f'Checking functions for f{self.filename}')
       # Classify the m-file as either a function, class, or script
       with open( self.filename , 'r+', encoding = "ISO-8859-1"  ) as f:
         myline = f.readline()
@@ -249,6 +248,7 @@ def makeFxnMap( list_of_fxn_objects ):
     output = [ search_mFile( list_of_fxn_objects[i], f'{this_fxn.name}\(' ) for this_fxn in list_of_fxn_objects ]
     fxnMap = np.vstack( [fxnMap,output] )
   return fxnMap
+
 
   #################################
   # PDF writing functions         #
